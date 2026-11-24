@@ -10,7 +10,7 @@ import com.westbank.repository.StaffRepository;
 import com.westbank.web.controller.CustomerSession;
 import com.westbank.web.controller.StaffSession;
 import com.westbank.ws.process.loanapproval._2019._01.ManagerDecision;
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
