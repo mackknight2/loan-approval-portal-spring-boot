@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
-import javax.jws.WebService;
+import jakarta.jws.WebService;
 
 @WebService(
         serviceName = "LoanContract",

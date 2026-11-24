@@ -14,16 +14,16 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.1.2.RELEASE</version>
+    <version>3.5.16</version>
     <relativePath/>
   </parent>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <cxf.version>3.2.7</cxf.version>
+    <cxf.version>4.1.9</cxf.version>
     <commons-lang.version>20030203.000129</commons-lang.version>
-    <java.version>1.8</java.version>
+    <java.version>21</java.version>
   </properties>
 
   <dependencies>
@@ -44,26 +44,20 @@
     <dependency>
       <groupId>org.apache.tomcat.embed</groupId>
       <artifactId>tomcat-embed-jasper</artifactId>
-      <version>9.0.14</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>jstl</artifactId>
-      <version>1.2</version>
-      <scope>provided</scope>
+      <groupId>jakarta.servlet.jsp.jstl</groupId>
+      <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.web</groupId>
+      <artifactId>jakarta.servlet.jsp.jstl</artifactId>
     </dependency>
     <!-- Spring Data JPA -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
-    <!-- Hibernate 5 and Java 8 JSR-310-->
-    <!-- https://stackoverflow.com/a/43997296/339302 -->
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-java8</artifactId>
-      <version>${hibernate.version}</version>
     </dependency>
     <!--<dependency>-->
     <!--<groupId>org.springframework.boot</groupId>-->
@@ -99,18 +93,17 @@
       <artifactId>cxf-rt-features-logging</artifactId>
       <version>${cxf.version}</version>
     </dependency>
+    <!-- SOAP with Attachments implementation: Java 8 shipped one, Java 11+ does not -->
+    <dependency>
+      <groupId>com.sun.xml.messaging.saaj</groupId>
+      <artifactId>saaj-impl</artifactId>
+    </dependency>
     <!-- HELPERS -->
     <!-- random string generator -->
     <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
       <version>${commons-lang.version}</version>
-    </dependency>
-    <!-- Stax2 -->
-    <dependency>
-      <groupId>org.codehaus.woodstox</groupId>
-      <artifactId>woodstox-core-asl</artifactId>
-      <version>4.4.1</version>
     </dependency>
     <dependency>
       <groupId>xom</groupId>
@@ -136,17 +129,15 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.0</version>
         <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
+          <release>${java.version}</release>
         </configuration>
       </plugin>
       <!-- Code coverage https://www.jacoco.org/jacoco/ -->
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.2</version>
+        <version>0.8.16</version>
         <executions>
           <execution>
             <goals>
@@ -175,7 +166,7 @@
       <plugin>
         <groupId>org.apache.cxf</groupId>
         <artifactId>cxf-codegen-plugin</artifactId>
-        <version>3.2.4</version>
+        <version>${cxf.version}</version>
         <executions>
           <execution>
             <id>generate-sources</id>
@@ -183,19 +174,168 @@
             <configuration>
               <!--<sourceRoot>${basedir}/src/main/java</sourceRoot>-->
               <sourceRoot>${project.build.directory}/generated/cxf</sourceRoot>
+              <!-- Point generated classes at the WSDL inside the app, not at the build machine's file system.
+                   Maven cannot pass the empty -wsdlLocation value the old build used. -->
+              <wsdlOptions>
+                <wsdlOption>
+                  <wsdl>${basedir}/src/main/resources/wsdl/BankInformation.wsdl</wsdl>
+                  <wsdlLocation>classpath:wsdl/BankInformation.wsdl</wsdlLocation>
+                  <extraargs>
+                    <extraarg>-defaultValues</extraarg>
+                    <extraarg>-suppress-generated-date</extraarg>
+                    <extraarg>-b</extraarg>
+                    <extraarg>${basedir}/src/main/resources/wsdl/bindings.xml</extraarg>
+                    <extraarg>-impl</extraarg>
+                    <extraarg>-client</extraarg>
+                  </extraargs>
+                </wsdlOption>
+                <wsdlOption>
+                  <wsdl>${basedir}/src/main/resources/wsdl/BankPrivilege.wsdl</wsdl>
+                  <wsdlLocation>classpath:wsdl/BankPrivilege.wsdl</wsdlLocation>
+                  <extraargs>
+                    <extraarg>-defaultValues</extraarg>
+                    <extraarg>-suppress-generated-date</extraarg>
+                    <extraarg>-b</extraarg>
+                    <extraarg>${basedir}/src/main/resources/wsdl/bindings.xml</extraarg>
+                    <extraarg>-impl</extraarg>
+                    <extraarg>-client</extraarg>
+                  </extraargs>
+                </wsdlOption>
+                <wsdlOption>
+                  <wsdl>${basedir}/src/main/resources/wsdl/CallbackLoanApproval.wsdl</wsdl>
+                  <wsdlLocation>classpath:wsdl/CallbackLoanApproval.wsdl</wsdlLocation>
+                  <extraargs>
+                    <extraarg>-defaultValues</extraarg>
+                    <extraarg>-suppress-generated-date</extraarg>
+                    <extraarg>-b</extraarg>
+                    <extraarg>${basedir}/src/main/resources/wsdl/bindings.xml</extraarg>
+                    <extraarg>-impl</extraarg>
+                    <extraarg>-client</extraarg>
+                  </extraargs>
+                </wsdlOption>
+                <wsdlOption>
+                  <wsdl>${basedir}/src/main/resources/wsdl/CallbackLoanContract.wsdl</wsdl>
+                  <wsdlLocation>classpath:wsdl/CallbackLoanContract.wsdl</wsdlLocation>
+                  <extraargs>
+                    <extraarg>-defaultValues</extraarg>
+                    <extraarg>-suppress-generated-date</extraarg>
+                    <extraarg>-b</extraarg>
+                    <extraarg>${basedir}/src/main/resources/wsdl/bindings.xml</extraarg>
+                    <extraarg>-impl</extraarg>
+                    <extraarg>-client</extraarg>
+                  </extraargs>
+                </wsdlOption>
+                <wsdlOption>
+                  <wsdl>${basedir}/src/main/resources/wsdl/CreditWorthiness.wsdl</wsdl>
+                  <wsdlLocation>classpath:wsdl/CreditWorthiness.wsdl</wsdlLocation>
+                  <extraargs>
+                    <extraarg>-defaultValues</extraarg>
+                    <extraarg>-suppress-generated-date</extraarg>
+                    <extraarg>-b</extraarg>
+                    <extraarg>${basedir}/src/main/resources/wsdl/bindings.xml</extraarg>
+                    <extraarg>-impl</extraarg>
+                    <extraarg>-client</extraarg>
+                  </extraargs>
+                </wsdlOption>
+                <wsdlOption>
+                  <wsdl>${basedir}/src/main/resources/wsdl/LoanApproval.wsdl</wsdl>
+                  <wsdlLocation>classpath:wsdl/LoanApproval.wsdl</wsdlLocation>
+                  <extraargs>
+                    <extraarg>-defaultValues</extraarg>
+                    <extraarg>-suppress-generated-date</extraarg>
+                    <extraarg>-b</extraarg>
+                    <extraarg>${basedir}/src/main/resources/wsdl/bindings.xml</extraarg>
+                    <extraarg>-impl</extraarg>
+                    <extraarg>-client</extraarg>
+                  </extraargs>
+                </wsdlOption>
+                <wsdlOption>
+                  <wsdl>${basedir}/src/main/resources/wsdl/LoanApprovalClosing.wsdl</wsdl>
+                  <wsdlLocation>classpath:wsdl/LoanApprovalClosing.wsdl</wsdlLocation>
+                  <extraargs>
+                    <extraarg>-defaultValues</extraarg>
+                    <extraarg>-suppress-generated-date</extraarg>
+                    <extraarg>-b</extraarg>
+                    <extraarg>${basedir}/src/main/resources/wsdl/bindings.xml</extraarg>
+                    <extraarg>-impl</extraarg>
+                    <extraarg>-client</extraarg>
+                  </extraargs>
+                </wsdlOption>
+                <wsdlOption>
+                  <wsdl>${basedir}/src/main/resources/wsdl/LoanContract.wsdl</wsdl>
+                  <wsdlLocation>classpath:wsdl/LoanContract.wsdl</wsdlLocation>
+                  <extraargs>
+                    <extraarg>-defaultValues</extraarg>
+                    <extraarg>-suppress-generated-date</extraarg>
+                    <extraarg>-b</extraarg>
+                    <extraarg>${basedir}/src/main/resources/wsdl/bindings.xml</extraarg>
+                    <extraarg>-impl</extraarg>
+                    <extraarg>-client</extraarg>
+                  </extraargs>
+                </wsdlOption>
+                <wsdlOption>
+                  <wsdl>${basedir}/src/main/resources/wsdl/LoanFile.wsdl</wsdl>
+                  <wsdlLocation>classpath:wsdl/LoanFile.wsdl</wsdlLocation>
+                  <extraargs>
+                    <extraarg>-defaultValues</extraarg>
+                    <extraarg>-suppress-generated-date</extraarg>
+                    <extraarg>-b</extraarg>
+                    <extraarg>${basedir}/src/main/resources/wsdl/bindings.xml</extraarg>
+                    <extraarg>-impl</extraarg>
+                    <extraarg>-client</extraarg>
+                  </extraargs>
+                </wsdlOption>
+                <wsdlOption>
+                  <wsdl>${basedir}/src/main/resources/wsdl/LoanRisk.wsdl</wsdl>
+                  <wsdlLocation>classpath:wsdl/LoanRisk.wsdl</wsdlLocation>
+                  <extraargs>
+                    <extraarg>-defaultValues</extraarg>
+                    <extraarg>-suppress-generated-date</extraarg>
+                    <extraarg>-b</extraarg>
+                    <extraarg>${basedir}/src/main/resources/wsdl/bindings.xml</extraarg>
+                    <extraarg>-impl</extraarg>
+                    <extraarg>-client</extraarg>
+                  </extraargs>
+                </wsdlOption>
+                <wsdlOption>
+                  <wsdl>${basedir}/src/main/resources/wsdl/LoanSettlement.wsdl</wsdl>
+                  <wsdlLocation>classpath:wsdl/LoanSettlement.wsdl</wsdlLocation>
+                  <extraargs>
+                    <extraarg>-defaultValues</extraarg>
+                    <extraarg>-suppress-generated-date</extraarg>
+                    <extraarg>-b</extraarg>
+                    <extraarg>${basedir}/src/main/resources/wsdl/bindings.xml</extraarg>
+                    <extraarg>-impl</extraarg>
+                    <extraarg>-client</extraarg>
+                  </extraargs>
+                </wsdlOption>
+                <wsdlOption>
+                  <wsdl>${basedir}/src/main/resources/wsdl/TaskDispatch.wsdl</wsdl>
+                  <wsdlLocation>classpath:wsdl/TaskDispatch.wsdl</wsdlLocation>
+                  <extraargs>
+                    <extraarg>-defaultValues</extraarg>
+                    <extraarg>-suppress-generated-date</extraarg>
+                    <extraarg>-b</extraarg>
+                    <extraarg>${basedir}/src/main/resources/wsdl/bindings.xml</extraarg>
+                    <extraarg>-impl</extraarg>
+                    <extraarg>-client</extraarg>
+                  </extraargs>
+                </wsdlOption>
+                <wsdlOption>
+                  <wsdl>${basedir}/src/main/resources/wsdl/Test.wsdl</wsdl>
+                  <wsdlLocation>classpath:wsdl/Test.wsdl</wsdlLocation>
+                  <extraargs>
+                    <extraarg>-defaultValues</extraarg>
+                    <extraarg>-suppress-generated-date</extraarg>
+                    <extraarg>-b</extraarg>
+                    <extraarg>${basedir}/src/main/resources/wsdl/bindings.xml</extraarg>
+                    <extraarg>-impl</extraarg>
+                    <extraarg>-client</extraarg>
+                  </extraargs>
+                </wsdlOption>
+              </wsdlOptions>
               <defaultOptions>
                 <defaultExcludesNamespace>true</defaultExcludesNamespace>
-                <extraargs>
-                  <extraarg>-defaultValues</extraarg>
-                  <!--<extraarg>-verbose</extraarg>-->
-                  <extraarg>-suppress-generated-date</extraarg>
-                  <extraarg>-b</extraarg>
-                  <extraarg>${basedir}/src/main/resources/wsdl/bindings.xml</extraarg>
-                  <extraarg>-impl</extraarg>
-                  <extraarg>-client</extraarg>
-                  <extraarg>-wsdlLocation</extraarg>
-                  <extraarg></extraarg>
-                </extraargs>
               </defaultOptions>
             </configuration>
             <goals>
@@ -207,7 +347,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>1.7</version>
         <executions>
           <execution>
             <id>add-source</id>

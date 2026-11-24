@@ -20,10 +20,10 @@ import com.westbank.ws.process.loanapproval._2019._01.CreditBrokerDecision;
 import com.westbank.ws.process.loanapproval._2019._01.CustomerDecision;
 import com.westbank.ws.process.loanapproval._2019._01.LoanApprovalRequest;
 import com.westbank.ws.process.loanapproval._2019._01.ManagerSignature;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -219,7 +219,7 @@ public class LoanApprovalEndToEndTest extends AbstractFullAppTest {
         // fails, because the contract cascades a duplicate insert of the agency row.
         contractRequest.setAgencyCode(application.getAgencyCode());
         assertThatThrownBy(() -> contracts.create(contractRequest))
-                .isInstanceOf(javax.xml.ws.soap.SOAPFaultException.class)
+                .isInstanceOf(jakarta.xml.ws.soap.SOAPFaultException.class)
                 .hasMessageContaining("could not execute statement");
         contractRequest.setAgencyCode("TST001");
         Long contractId = contracts.create(contractRequest).getLoanContractId();

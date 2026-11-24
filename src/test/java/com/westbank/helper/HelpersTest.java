@@ -1,7 +1,7 @@
 package com.westbank.helper;
 
 import com.westbank.ws.test._2019._01.TestRequest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.Arrays;
