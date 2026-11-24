@@ -3,8 +3,8 @@ package com.westbank.helper;
 import com.westbank.CustomerTestConstants;
 import com.westbank.entity.Customer;
 import com.westbank.web.form.LoanForm;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,7 +13,7 @@ public class CustomerMapperTest implements CustomerTestConstants {
     private LoanForm form;
     private LoanForm emptyForm;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         emptyForm = new LoanForm();
 

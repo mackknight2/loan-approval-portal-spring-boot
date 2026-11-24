@@ -31,6 +31,22 @@ How each number was measured:
 - **Coverage:** JaCoCo. "Hand-written" excludes the classes Apache CXF generates from the WSDL files (`com.westbank.ws.{business,client,process,test}.*._2019._01`). Including generated code, coverage was 14.6% (491 of 3,353 lines).
 - **Vulnerabilities:** Trivy 0.76.2, `trivy rootfs --scanners vuln` on the unpacked `target/loan-approval-portal-spring-boot-0.0.1.war`, counting unique vulnerability IDs by severity.
 
+## After the upgrade (PR 2)
+
+Measured on the upgrade branch with the same commands as above, but with Java 21 and Maven 3.9.16.
+The "before" column is `main` after PR 1 was merged (PR 1 added 64 tests, so the numbers above are older than the starting point of this upgrade).
+
+| Measure | Before (main after PR 1) | After (PR 2) |
+|---|---|---|
+| Java version | Java 8 | Java 21 (OpenJDK 21.0.13) |
+| Framework version | Spring Boot 2.1.2.RELEASE, Apache CXF 3.2.7 | Spring Boot 4.1.3, Apache CXF 4.2.4 |
+| Tests passing / total | 120 / 120 (0 skipped) | 120 / 120 (0 skipped), same 120 test names |
+| Line coverage, hand-written code | 83.8% (1,623 of 1,936 lines) | 83.9% (1,627 of 1,940 lines) |
+| Known vulnerabilities: critical / high / medium / low | 30 / 106 / 60 / 11 (207 unique IDs) | 0 / 0 / 0 / 0 |
+| App starts and main flow works | Starts. Main flow works up to the contract step (bug 6). | Same. The pages, the `/services` list (12 services) and the end-to-end test give the same results as before. |
+
+All eight bugs listed above behave exactly as before. They are still pinned by the same tests.
+
 ## Current behavior pinned by tests (bugs, not fixed)
 
 These are real bugs in today's code. The safety-net tests record the current behavior so that an upgrade cannot change it silently. Fixing them is a separate decision.
@@ -46,8 +62,8 @@ These are real bugs in today's code. The safety-net tests record the current beh
 
 ## Risks and dependencies
 
-- **External workflow engine.** The main flow depends on Apache ODE, which is not in this repository. Tests replace it with a stand-in (`@MockBean LoanApproval`), so they prove the app's side of each call, not the engine's.
+- **External workflow engine.** The main flow depends on Apache ODE, which is not in this repository. Tests replace it with a stand-in (`@MockitoBean LoanApproval`), so they prove the app's side of each call, not the engine's.
 - **Random business rules** (bug 8) mean the tests pin only the possible range of answers, not a single answer.
 - **Asynchronous call-back.** The `CallbackLoanApproval` web service is one-way, so its effect lands after the call returns. The end-to-end test waits for it.
-- **Old build tooling.** The Maven wrapper downloads Maven 3.5.4; the CXF code generation plugin is 3.2.4 while the CXF runtime is 3.2.7.
+- **Build tooling.** Since PR 2 the build needs Java 21 and Maven 3.6.3 or newer. The Maven wrapper now downloads Maven 3.9.16, and the CXF code generation plugin uses the same version as the CXF runtime.
 - **Travis CI** (`.travis.yml`) is left in place. GitHub Actions (`.github/workflows/ci.yml`) now builds and tests every pull request and every push to `main`.

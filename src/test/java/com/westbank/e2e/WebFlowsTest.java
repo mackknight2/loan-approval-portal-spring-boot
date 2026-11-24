@@ -10,14 +10,13 @@ import com.westbank.repository.StaffRepository;
 import com.westbank.web.controller.CustomerSession;
 import com.westbank.web.controller.StaffSession;
 import com.westbank.ws.process.loanapproval._2019._01.ManagerDecision;
-import org.apache.commons.lang.RandomStringUtils;
-import org.junit.Test;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.web.util.NestedServletException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -113,7 +112,7 @@ public class WebFlowsTest extends AbstractFullAppTest {
         // Known bug (pinned, not fixed): POST /staff/manager does not check the login and fails
         // with a NullPointerException for anonymous visitors.
         assertThatThrownBy(() -> mvc.perform(post("/staff/manager").param("action", "grant").param("loanFileId", "x")))
-                .isInstanceOf(NestedServletException.class)
+                .isInstanceOf(jakarta.servlet.ServletException.class)
                 .hasCauseInstanceOf(NullPointerException.class);
     }
 
@@ -257,7 +256,7 @@ public class WebFlowsTest extends AbstractFullAppTest {
                 .param("borrowerZipcode", "3000").param("borrowerPhone", "0400000000")
                 .param("borrowerEmail", "alice@test.com").param("borrowerOccupation", "Engineer")
                 .param("borrowerIncome", "100000").param("borrowerLengthOfService", "5")))
-                .isInstanceOf(NestedServletException.class)
+                .isInstanceOf(jakarta.servlet.ServletException.class)
                 .hasCauseInstanceOf(ClassCastException.class);
     }
 

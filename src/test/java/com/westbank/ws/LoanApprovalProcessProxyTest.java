@@ -9,8 +9,8 @@ import com.westbank.helper.Generator;
 import com.westbank.repository.CustomerRepository;
 import com.westbank.web.form.LoanForm;
 import com.westbank.ws.process.loanapproval._2019._01.*;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -27,7 +27,7 @@ public class LoanApprovalProcessProxyTest {
     private LoanApproval processClient;
     private CustomerRepository customerRepository;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         proxy = new LoanApprovalProcessProxy();
         processClient = mock(LoanApproval.class);

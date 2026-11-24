@@ -21,7 +21,7 @@ import com.westbank.ws.business.taskdispatch._2019._01.TaskDispatchRequest;
 import com.westbank.ws.client.callbackloanapproval._2019._01.CallbackLoanApprovalRequest;
 import com.westbank.ws.client.callbackloancontract._2019._01.CallbackLoanContractRequest;
 import com.westbank.ws.test._2019._01.TestRequest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.test.util.ReflectionTestUtils;
 

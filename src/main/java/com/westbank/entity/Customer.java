@@ -2,7 +2,7 @@ package com.westbank.entity;
 
 import com.westbank.adapter.jpa.MaritalStatusConverter;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;

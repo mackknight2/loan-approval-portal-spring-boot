@@ -5,7 +5,7 @@ import com.westbank.adapter.jpa.LoanFileStatusConverter;
 import com.westbank.adapter.jpa.LoanRiskConverter;
 import com.westbank.adapter.jpa.ResidenceTypeConverter;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;

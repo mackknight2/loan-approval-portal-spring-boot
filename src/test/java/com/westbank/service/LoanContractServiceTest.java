@@ -8,24 +8,22 @@ import com.westbank.helper.Generator;
 import com.westbank.repository.LoanContractRepository;
 import com.westbank.repository.LoanFileRepository;
 import com.westbank.ws.business.loancontract._2019._01.LoanContractRequest;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@RunWith(SpringRunner.class)
 @DataJpaTest
 @ActiveProfiles("data")
 @Import(LoanContractService.class)
@@ -53,7 +51,7 @@ public class LoanContractServiceTest {
     private LoanContractRequest request;
     private LoanFile aliceLoanFile;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         alice = new Customer();
         alice.setFirstName(CustomerTestConstants.ALICE_FIRSTNAME);
@@ -85,11 +83,10 @@ public class LoanContractServiceTest {
         request.setAgencyCode(AGENCY_CODE);
     }
 
-    @Test(expected = DataAccessException.class)
+    @Test
     public void createAndSaveContract_shouldThrowException_forNewRequestWithoutBorrower() {
-        assertThat(loanContractService.createAndSaveContract(request)).isNotNull();
-        assertThat(loanFileRepository.findAll()).hasSize(1);
-        assertThat(loanContractRepository.findAll()).hasSize(1);
+        assertThatThrownBy(() -> loanContractService.createAndSaveContract(request))
+                .isInstanceOf(DataAccessException.class);
     }
 
     @Test

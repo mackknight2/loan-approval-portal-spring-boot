@@ -21,8 +21,6 @@ spring:
   datasource:
     url: jdbc:h2:mem:westbank;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     driverClassName: org.h2.Driver
-    platform: org.hibernate.dialect.H2Dialect
-    initialization-mode: always
     username: sa
     password:
   # JPA
@@ -49,7 +47,7 @@ spring:
 
   # auto-configures
   autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration,org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration
+    exclude: org.springframework.boot.hibernate.autoconfigure.HibernateJpaAutoConfiguration,org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration,org.springframework.boot.jdbc.autoconfigure.DataSourceTransactionManagerAutoConfiguration
 
 server:
   port: 9999

@@ -3,7 +3,7 @@ package com.westbank.adapter;
 import com.westbank.adapter.jpa.*;
 import com.westbank.adapter.xml.*;
 import com.westbank.entity.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 

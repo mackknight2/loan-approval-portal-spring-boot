@@ -3,7 +3,7 @@ package com.westbank.web.guard;
 import com.westbank.web.controller.StaffSession;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 @Component
 public class StaffAccessGuard extends AccessGuard {

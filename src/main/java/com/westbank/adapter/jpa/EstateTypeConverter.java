@@ -2,8 +2,8 @@ package com.westbank.adapter.jpa;
 
 import com.westbank.entity.EstateType;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 /**
  * https://dzone.com/articles/mapping-enums-done-right

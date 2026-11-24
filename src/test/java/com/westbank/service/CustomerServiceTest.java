@@ -6,21 +6,18 @@ import com.westbank.config.HelperConfig;
 import com.westbank.entity.Customer;
 import com.westbank.helper.CustomerMapper;
 import com.westbank.web.form.LoanForm;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
 @ActiveProfiles("data")
 @DataJpaTest
 @Import(CustomerService.class)
@@ -37,7 +34,7 @@ public class CustomerServiceTest {
     private Customer bob;
     private LoanForm aliceForm;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         alice = new Customer();
         alice.setFirstName(CustomerTestConstants.ALICE_FIRSTNAME);

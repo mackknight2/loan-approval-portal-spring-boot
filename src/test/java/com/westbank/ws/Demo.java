@@ -8,8 +8,8 @@ import com.westbank.ws.process.loanapproval._2019._01.Address;
 import com.westbank.ws.process.loanapproval._2019._01.LoanApproval;
 import com.westbank.ws.process.loanapproval._2019._01.LoanApprovalRequest;
 import com.westbank.ws.process.loanapproval._2019._01.LoanApproval_Service;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +27,7 @@ public class Demo {
     private LoanApproval processClient;
     private LoanApproval_Service loanApprovalService;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         try {
             wsdlURL = new URL(PROCESS_ENDPOINT);

@@ -8,7 +8,7 @@ import com.westbank.repository.LoanFileRepository;
 import com.westbank.repository.StaffRepository;
 import com.westbank.ws.business.creditworthiness._2019._01.CreditWorthinessRequest;
 import com.westbank.ws.client.callbackloanapproval._2019._01.CallbackLoanApprovalRequest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 

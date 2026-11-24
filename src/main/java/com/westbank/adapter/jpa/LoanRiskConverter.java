@@ -3,8 +3,8 @@ package com.westbank.adapter.jpa;
 import com.westbank.entity.LoanRisk;
 import com.westbank.entity.MaritalStatus;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 @Converter(autoApply = true)
 public class LoanRiskConverter implements AttributeConverter<LoanRisk, Integer> {
