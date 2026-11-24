@@ -4,7 +4,7 @@ import com.westbank.config.*;
 import com.westbank.web.controller.CustomerProfileController;
 import com.westbank.web.validator.CustomerProfileValidator;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
