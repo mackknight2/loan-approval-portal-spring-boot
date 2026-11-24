@@ -159,6 +159,15 @@
             <goals>
               <goal>report</goal>
             </goals>
+            <configuration>
+              <!-- Measure hand-written code only: skip the classes CXF generates from the WSDL files -->
+              <excludes>
+                <exclude>com/westbank/ws/business/*/_2019/**</exclude>
+                <exclude>com/westbank/ws/client/*/_2019/**</exclude>
+                <exclude>com/westbank/ws/process/*/_2019/**</exclude>
+                <exclude>com/westbank/ws/test/_2019/**</exclude>
+              </excludes>
+            </configuration>
           </execution>
         </executions>
       </plugin>
